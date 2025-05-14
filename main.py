@@ -5,10 +5,16 @@ import pygame
 from constants import *
 from player import Player
 
+
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
+
+    # create two groups
+    updatable = pygame.sprite.Group() # all objects that can be updated
+    drawable = pygame.sprite.Group() # all objects that can be drawn
+    Player.containers = (updatable, drawable)
 
     pygame.init()
     clock = pygame.time.Clock()
@@ -24,12 +30,13 @@ def main():
         # limit the framerate to 60 fps
         dt = clock.tick(60) / 1000
 
-        # update player with fresh dt
-        player.update(dt)
+        # update all objects in updatable with fresh dt
+        updatable.update(dt)
 
         # draw everything
         screen.fill((0,0,0))
-        player.draw(screen)
+        for obj in drawable:
+            obj.draw(screen)
         pygame.display.flip()
         
 
